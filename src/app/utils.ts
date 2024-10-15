@@ -9,6 +9,12 @@ export async function getToolsFromDb() {
   return rows;
 }
 
+export async function getToolByToolCodeFromDb(toolCode: string) {
+    const { rows } = await sql`SELECT * from MS1024_Tools WHERE Tool_Code = ${toolCode} LIMIT 1`;
+  
+    return rows;
+  }
+
 export async function getRentalFeesFromDb() {
   const { rows } = await sql`SELECT * from MS1024_Rental_Fees`;
 
@@ -89,7 +95,6 @@ export const submitForm = (
     final_amount: preDiscountAmount - discountAmount,
   };
 
-  console.log(values);
   submitRentalAgreement(values);
 
   redirect(`/confirmation/${uuid}`);
@@ -132,7 +137,6 @@ const getDatesBetweenStartAndEnd = (start: Dayjs, end: Dayjs) => {
     const stopDate = dayjs(end);
    
     while (currentDate.isBefore(stopDate)) {
-        console.log('CURRENT DATE', currentDate);
         dateArray.push( dayjs(currentDate).format('DD/MM/YYYY') )
         currentDate = dayjs(currentDate).add(1, 'days');
     }
