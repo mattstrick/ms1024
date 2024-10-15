@@ -1,12 +1,8 @@
 "use server";
 
-import TextField from "@mui/material/TextField";
-import { getRentalFeesFromDb, getToolsFromDb } from "./utils";
-import InputAdornment from "@mui/material/InputAdornment";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { getRentalFeesFromDb, getToolsFromDb, submitForm } from "./utils";
 import CheckoutForm from "./components/checkoutForm";
+import dayjs, { Dayjs } from "dayjs";
 
 export default async function Home() {
   const toolRows = await getToolsFromDb();
@@ -15,6 +11,7 @@ export default async function Home() {
   //   TABLES
   // MS1024_Tools
   // MS1024_Rental_Fees
+  // MS1024_Rental_Transactions
 
   //   CREATE
   // ---------------
@@ -33,6 +30,19 @@ export default async function Home() {
   //     Holiday_Charge BOOLEAN
   // );`
 
+  //   await sql `CREATE TABLE MS1024_Rental_Transactions (
+  //     Transaction_ID UUID PRIMARY KEY,
+  //     Tool_Code VARCHAR(50),
+  //     Checkout_Date DATE,
+  //     Return_Date DATE,
+  //     Daily_Rental_Charge DECIMAL(10, 2),
+  //     Chargeable_Days INT,
+  //     Pre_Discount_Amount DECIMAL(10, 2),
+  //     Discount_Percent DECIMAL(5, 2),
+  //     Discount_Amount DECIMAL(10, 2),
+  //     Final_Amount DECIMAL(10, 2)
+  // );`
+
   //   INSERT
   //  ------------------
   // await sql`INSERT INTO MS1024_Tools (id, Tool_Code, Tool_Type, Brand)
@@ -47,6 +57,12 @@ export default async function Home() {
   //   ('Ladder', 1.99, TRUE, TRUE, FALSE),
   //   ('Chainsaw', 1.49, TRUE, FALSE, TRUE),
   // ('Jackhammer', 2.99, TRUE, FALSE, FALSE);`
+
+  const handleFormSubmit = (toolSelect: string, checkoutDate: string, returnDate: string, discount: number) => {
+    "use server";
+
+    submitForm(toolSelect, dayjs(checkoutDate), dayjs(returnDate), discount, toolRows, rentalFeeRows);
+  }
 
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
@@ -71,11 +87,8 @@ export default async function Home() {
           ))}
         </div>
 
-        <CheckoutForm />
+        <CheckoutForm tools={toolRows} handleSubmit={handleFormSubmit} />
       </main>
-      {/* <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        footer
-      </footer> */}
     </div>
   );
 }
