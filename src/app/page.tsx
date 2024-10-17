@@ -66,27 +66,7 @@ export default async function Home() {
 
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <div>
-          <h2>Tools</h2>
-          {toolRows.map((row) => (
-            <div key={row.id}>
-              {row.id} - {row.tool_code} - {row.tool_type} - {row.brand}
-            </div>
-          ))}
-        </div>
-        <div>
-          <h2>Rental Fees</h2>
-          {rentalFeeRows.map((row) => (
-            <div key={row.id}>
-              {row.tool_type} - ${row.daily_charge} -{" "}
-              {row.weekday_charge ? "Yes" : "No"} -{" "}
-              {row.weekend_charge ? "Yes" : "No"} -{" "}
-              {row.holiday_charge ? "Yes" : "No"}
-            </div>
-          ))}
-        </div>
-
+      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">        
         <CheckoutForm tools={toolRows} handleSubmit={handleFormSubmit} />
       </main>
     </div>
