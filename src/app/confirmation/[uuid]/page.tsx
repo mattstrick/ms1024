@@ -46,7 +46,7 @@ export default async function Confirmation({
               {rentalAgreement[0].pre_discount_amount}
             </p>
             <p>
-              <b>Discount percent</b> %{rentalAgreement[0].discount_percent}
+              <b>Discount percent</b> {rentalAgreement[0].discount_percent}%
             </p>
             <p>
               <b>Discount amount</b> ${rentalAgreement[0].discount_amount}
